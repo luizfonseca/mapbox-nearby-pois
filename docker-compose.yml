@@ -1,5 +1,11 @@
-version: "3.8"
+version: "3.3"
 services:
-  web: 
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
     ports:
       - 3300:3300
+    env_file: .env
