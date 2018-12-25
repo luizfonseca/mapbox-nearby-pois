@@ -1,5 +1,6 @@
 AllCops:
   RunRailsCops: true
+  TargetRubyVersion: 2.3
 
 # Commonly used screens these days easily fit more than 80 characters.
 Metrics/LineLength:

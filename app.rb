@@ -1,5 +1,5 @@
 require 'sinatra'
-require "sinatra/json"
+require 'sinatra/json'
 require 'mapbox-sdk'
 
 ENDPOINTS_PATH = './endpoint'.freeze

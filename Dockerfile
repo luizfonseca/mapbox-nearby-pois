@@ -4,9 +4,11 @@ RUN apk add build-base bash git
 
 RUN mkdir /app
 WORKDIR /app
-ADD Gemfile /app/
+COPY Gemfile /app/
+COPY Gemfile.lock /app
 
 RUN bundle install
-EXPOSE 3300
 
-ENTRYPOINT [ "ruby", "app.rb" ]
+EXPOSE 3300
+COPY . /app
+

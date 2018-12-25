@@ -5,10 +5,12 @@ ruby '2.5.3'
 gem 'sinatra'
 gem 'sinatra-contrib'
 gem 'mapbox-sdk'
-gem 'rerun'
 
+group :development, :test do
+  gem 'rerun'
+  gem 'rubocop'
+end
 
 group :test do
-  gem 'rubocop'
   gem 'rspec'
 end
