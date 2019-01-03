@@ -3,11 +3,11 @@ module Endpoint
   class NearbyPointsOfInterest < Sinatra::Base
     TYPES = %w[poi].freeze
     ALLOWED_COUNTRY = 'DE'.freeze
-    ALLOWED_CATEGORIES = %w[coffee restaurants].freeze
+    ALLOWED_CATEGORIES = %w[coffee\ shop restaurants].freeze
 
     get '/nearby' do
       status 200
-      json postcodes: result
+      json data: result
     end
 
     private
@@ -18,27 +18,30 @@ module Endpoint
 
     def result
       @result ||= mapbox_request.map do |collection|
-        points_by_postcode collection.dig('features')
+        features_by_postcode collection.dig('features')
       end
 
       @result&.first || {}
     end
 
-    def points_by_postcode(features)
+    # TODO: map Features to a feature Model
+    def features_by_postcode(features)
       return unless features
 
-      @points_by_postcode ||= features.group_by do |feature|
+      @features_by_postcode ||= features.group_by do |feature|
         feature['context'].find { |ctx| postcode?(ctx) }['text']
       end
     end
 
+    # Uses MapBox SDK to query nearby POIs from a set of coordinates
+    # and a 'search term' e.g. coffee shops, restaurants etc.
     def mapbox_request
       @mapbox_request ||= Mapbox::Geocoder.geocode_forward(
         category,
-        proximity: coordinates,
-        types: TYPES,
         limit: 10,
-        country: ALLOWED_COUNTRY
+        types: TYPES,
+        country: ALLOWED_COUNTRY,
+        proximity: coordinates
       )
     rescue StandardError
       # Log error on bugsnag/other platform
