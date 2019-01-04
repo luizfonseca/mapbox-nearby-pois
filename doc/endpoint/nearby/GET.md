@@ -1,0 +1,6 @@
+# GET /nearby
+
+
+
+## Parameters
+
